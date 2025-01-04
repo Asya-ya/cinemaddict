@@ -1,9 +1,8 @@
-import { getRandomInteger } from "../utils/getRandomNumber";
+export const generateFiltersCount = movies => {
+  const watchlistCount = movies.filter(i => i.isOnWatchlist).length;
+  const historyCount = movies.filter(i => i.isOnHistory).length;
+  const favoritesCount = movies.filter(i => i.isFavorite).length;
 
-export const generateFiltersCount = () => {
-  const watchlistCount = getRandomInteger(0, 100);
-  const historyCount = getRandomInteger(0, 100);
-  const favoritesCount = getRandomInteger(0, 100);
   return {
     watchlistCount,
     historyCount,

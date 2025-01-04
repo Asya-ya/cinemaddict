@@ -57,7 +57,7 @@ const topRatedMovies = getMovies(TOP_RATED_TASK_COUNT);
 const mostCommentedMovies = getMovies(MOST_COMMENTED_TASK_COUNT);
 const moviesNumber = generateMoviesNumber();
 const profileRating = generateProfileRating();
-const filtersCount = generateFiltersCount();
+const filtersCount = generateFiltersCount(movies);
 
 const headerElement = document.querySelector('.header');
 const mainElement = document.querySelector('.main');

@@ -53,6 +53,10 @@ export const generateMovie = () => {
 
   const commentsQuantity = getRandomInteger(0, 5);
 
+  const isOnWatchlist = Boolean(getRandomInteger(0, 1));
+  const isOnHistory = Boolean(getRandomInteger(0, 1));
+  const isFavorite = Boolean(getRandomInteger(0, 1));
+
   return {
     poster,
     fullPoster: poster,
@@ -71,5 +75,8 @@ export const generateMovie = () => {
     fullDescription,
     commentsQuantity,
     ageRating: '18+',
+    isOnWatchlist,
+    isOnHistory,
+    isFavorite,
   }
 }
