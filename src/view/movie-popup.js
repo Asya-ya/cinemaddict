@@ -1,4 +1,6 @@
-export const createMoviePopupTemplate = movie => {
+import { createElement } from "../utils/render";
+
+const createMoviePopupTemplate = movie => {
   return `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="film-details__top-container">
@@ -163,4 +165,27 @@ export const createMoviePopupTemplate = movie => {
     </div>
   </form>
 </section>`
+}
+
+export default class MoviePopup {
+  constructor(movie) {
+    this._element = null;
+    this._movie = movie;
+  }
+
+  getTemplate() {
+    return createMoviePopupTemplate(this._movie);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
 }

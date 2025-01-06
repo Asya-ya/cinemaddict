@@ -1,4 +1,6 @@
-export const createMovieCardTemplate = movie => {
+import { createElement } from "../utils/render";
+
+const createMovieCardTemplate = movie => {
   return `<article class="film-card">
     <h3 class="film-card__title">${movie.title}</h3>
     <p class="film-card__rating">${movie.rating}</p>
@@ -16,4 +18,27 @@ export const createMovieCardTemplate = movie => {
       <button class="film-card__controls-item film-card__controls-item--favorite film-card__controls-item--active" type="button">Mark as favorite</button>
     </div>
   </article>`
+}
+
+export default class MovieCard {
+  constructor(movie) {
+    this._element = null;
+    this._movie = movie;
+  }
+
+  getTemplate() {
+    return createMovieCardTemplate(this._movie);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
 }
