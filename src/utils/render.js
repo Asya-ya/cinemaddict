@@ -1,7 +1,6 @@
 import { RenderPosition } from "../const";
 
 export const renderElement = (container, element, place = RenderPosition.BEFOREEND) => {
-  console.log('place', place);
   switch (place) {
     case RenderPosition.AFTERBEGIN:
       container.prepend(element);
