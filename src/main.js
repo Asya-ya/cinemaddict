@@ -1,5 +1,4 @@
 import { renderElement } from './utils/render.js';
-import { RenderPosition } from './const.js';
 import UserProfileView from './view/user-profile.js';
 import MenuView from './view/menu.js';
 import SortingView from './view/sorting.js';
@@ -10,8 +9,9 @@ import MostCommentedListView from './view/most-commented-list.js';
 import MovieCardView from './view/movie-card.js';
 import ShowMoreButtonView from './view/show-more-button.js';
 import FooterStatisticsView from './view/footer-statistics.js';
-import { generateMovie } from './mock/movie.js';
 import MoviePopupView from './view/movie-popup.js';
+import MoviesListEmpty from './view/movies-list-empty.js';
+import { generateMovie } from './mock/movie.js';
 import { generateMoviesNumber } from './mock/moviesNumber.js';
 import { generateProfileRating } from './mock/profileRating.js';
 import { generateFiltersCount } from './mock/filtersCount.js';
@@ -92,6 +92,11 @@ const renderMovie = (filmsListContainer, movie) => {
 };
 
 const renderMovies = (start = 0) => {
+  if (!MAIN_TASK_COUNT) {
+    renderElement(filmsListContainerElement, new MoviesListEmpty().getElement());
+    return;
+  }
+
   for (let i = start; i < Math.min(SHOWN_TASK_COUNT + start, MAIN_TASK_COUNT); i++) {
     renderMovie(filmsListContainerElement, movies[i]);
   }
@@ -144,6 +149,10 @@ renderMostCommentedMovies(0);
 
 renderElement(filmsListElement, new ShowMoreButtonView().getElement());
 const showMoreButton = filmsListElement.querySelector('.show-more');
+
+if (!MAIN_TASK_COUNT) {
+  showMoreButton.remove();
+}
 
 showMoreButton.addEventListener('click', (evt) => {
   evt.preventDefault();
