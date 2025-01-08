@@ -1,4 +1,4 @@
-import { renderElement } from './utils/render.js';
+import { remove, render } from './utils/render.js';
 import UserProfileView from './view/user-profile.js';
 import MenuView from './view/menu.js';
 import SortingView from './view/sorting.js';
@@ -56,31 +56,33 @@ const renderMovie = (filmsListContainer, movie) => {
   };
 
   const openPopup = () => {
-    bodyComponent.appendChild(moviePopupComponent.getElement());
+    render(bodyComponent, moviePopupComponent);
     bodyComponent.classList.add('hide-overflow');
     document.addEventListener('keydown', onPressEsc);
     movieCardComponent.removeClickCardHandler();
+    moviePopupComponent.setClickClosePopupHandler(closePopup);
     setTimeout(onClickEvent, 0);
   }
 
   const closePopup = () => {
-    bodyComponent.removeChild(moviePopupComponent.getElement());
+    remove(moviePopupComponent);
     bodyComponent.classList.remove('hide-overflow');
     document.removeEventListener('keydown', onPressEsc);
     document.removeEventListener('click', onClick);
     movieCardComponent.setClickCardHandler(openPopup);
+    moviePopupComponent.removeClickClosePopupHandler();
   }
 
   movieCardComponent.setClickCardHandler(openPopup);
 
   moviePopupComponent.setClickClosePopupHandler(closePopup);
 
-  renderElement(filmsListContainer, movieCardComponent.getElement());
+  render(filmsListContainer, movieCardComponent);
 };
 
 const renderMovies = (start = 0) => {
   if (!MAIN_TASK_COUNT) {
-    renderElement(filmsListContainerElement, new MoviesListEmpty().getElement());
+    render(filmsListContainerElement, new MoviesListEmpty());
     return;
   }
 
@@ -110,16 +112,16 @@ const showMoreMovies = () => {
 const headerElement = document.querySelector('.header');
 const mainElement = document.querySelector('.main');
 
-renderElement(headerElement, new UserProfileView(profileRating).getElement());
-renderElement(mainElement, new MenuView(filtersCount).getElement());
-renderElement(mainElement, new SortingView().getElement());
-renderElement(mainElement, new ContentContainerView().getElement());
+render(headerElement, new UserProfileView(profileRating));
+render(mainElement, new MenuView(filtersCount));
+render(mainElement, new SortingView());
+render(mainElement, new ContentContainerView());
 
 const filmsContainerElement = mainElement.querySelector('.films');
 
-renderElement(filmsContainerElement, new MoviesListView().getElement());
-renderElement(filmsContainerElement, new TopRatedListView().getElement());
-renderElement(filmsContainerElement, new MostCommentedListView().getElement());
+render(filmsContainerElement, new MoviesListView());
+render(filmsContainerElement, new TopRatedListView());
+render(filmsContainerElement, new MostCommentedListView());
 
 const filmsListElement = filmsContainerElement.querySelector('.films-list');
 const filmsListContainerElement = filmsListElement.querySelector('.films-list__container');
@@ -136,7 +138,7 @@ renderMostCommentedMovies(0);
 
 const showMoreButtonComponent = new ShowMoreButtonView();
 
-renderElement(filmsListElement, showMoreButtonComponent.getElement());
+render(filmsListElement, showMoreButtonComponent);
 
 if (!MAIN_TASK_COUNT) {
   showMoreButtonComponent.getElement().remove();
@@ -153,4 +155,4 @@ showMoreButtonComponent.setClickShowMoreHandler(() => {
 const footer = document.querySelector('.footer');
 const footerStatisticsElement = footer.querySelector('.footer__statistics');
 
-renderElement(footerStatisticsElement, new FooterStatisticsView(moviesNumber).getElement());
+render(footerStatisticsElement, new FooterStatisticsView(moviesNumber));
