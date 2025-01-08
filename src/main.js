@@ -35,20 +35,16 @@ const profileRating = generateProfileRating();
 const filtersCount = generateFiltersCount(movies);
 
 const renderMovie = (filmsListContainer, movie) => {
-  const movieCardComponent = new MovieCardView(movie).getElement();
-  const moviePopupComponent = new MoviePopupView(movie).getElement();
+  const movieCardComponent = new MovieCardView(movie);
+  const moviePopupComponent = new MoviePopupView(movie);
   const bodyComponent = document.querySelector('body');
-  const movieCardTitleElement = movieCardComponent.querySelector('.film-card__title');
-  const movieCardPosterElement = movieCardComponent.querySelector('.film-card__poster');
-  const movieCardCommentsElement = movieCardComponent.querySelector('.film-card__comments');
-  const moviePopupCloseButtonElement = moviePopupComponent.querySelector('.film-details__close-btn');
 
   const onPressEsc = evt => {
     onEscKeyDown(evt, closePopup);
   };
 
   const onClick = evt => {
-    const isClickOnPopup = evt.composedPath().includes(moviePopupComponent);
+    const isClickOnPopup = evt.composedPath().includes(moviePopupComponent.getElement());
 
     if (!isClickOnPopup) {
       closePopup();
@@ -60,35 +56,26 @@ const renderMovie = (filmsListContainer, movie) => {
   };
 
   const openPopup = () => {
-    bodyComponent.appendChild(moviePopupComponent);
+    bodyComponent.appendChild(moviePopupComponent.getElement());
     bodyComponent.classList.add('hide-overflow');
     document.addEventListener('keydown', onPressEsc);
-    movieCardTitleElement.removeEventListener('click', openPopup);
-    movieCardPosterElement.removeEventListener('click', openPopup);
-    movieCardCommentsElement.removeEventListener('click', openPopup);
+    movieCardComponent.removeClickCardHandler();
     setTimeout(onClickEvent, 0);
   }
 
   const closePopup = () => {
-    bodyComponent.removeChild(moviePopupComponent);
+    bodyComponent.removeChild(moviePopupComponent.getElement());
     bodyComponent.classList.remove('hide-overflow');
     document.removeEventListener('keydown', onPressEsc);
     document.removeEventListener('click', onClick);
-    movieCardTitleElement.addEventListener('click', openPopup);
-    movieCardPosterElement.addEventListener('click', openPopup);
-    movieCardCommentsElement.addEventListener('click', openPopup);
+    movieCardComponent.setClickCardHandler(openPopup);
   }
 
-  movieCardTitleElement.addEventListener('click', openPopup);
-  movieCardPosterElement.addEventListener('click', openPopup);
-  movieCardCommentsElement.addEventListener('click', openPopup);
+  movieCardComponent.setClickCardHandler(openPopup);
 
-  moviePopupCloseButtonElement.addEventListener('click', evt => {
-    evt.preventDefault();
-    closePopup();
-  })
+  moviePopupComponent.setClickClosePopupHandler(closePopup);
 
-  renderElement(filmsListContainer, movieCardComponent);
+  renderElement(filmsListContainer, movieCardComponent.getElement());
 };
 
 const renderMovies = (start = 0) => {
@@ -147,19 +134,19 @@ renderMovies(0);
 renderTopRatedMovies(0);
 renderMostCommentedMovies(0);
 
-renderElement(filmsListElement, new ShowMoreButtonView().getElement());
-const showMoreButton = filmsListElement.querySelector('.show-more');
+const showMoreButtonComponent = new ShowMoreButtonView();
+
+renderElement(filmsListElement, showMoreButtonComponent.getElement());
 
 if (!MAIN_TASK_COUNT) {
-  showMoreButton.remove();
+  showMoreButtonComponent.getElement().remove();
 }
 
-showMoreButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
+showMoreButtonComponent.setClickShowMoreHandler(() => {
   showMoreMovies();
 
   if (offset >= MAIN_TASK_COUNT) {
-    showMoreButton.remove();
+    showMoreButtonComponent.getElement().remove();
   }
 });
 
