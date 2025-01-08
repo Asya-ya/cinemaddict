@@ -2,7 +2,7 @@ import { getRandomInteger } from "../utils/getRandomNumber";
 
 const getTextRating = num => {
   if (!num || isNaN(num)) {
-    return null;
+    return '';
   }
 
   if (num <= 10) {
@@ -17,6 +17,6 @@ const getTextRating = num => {
 }
 
 export const generateProfileRating = () => {
-  const int = getRandomInteger(0, 100);
+  const int = getRandomInteger(0, 30);
   return getTextRating(int);
 }
