@@ -1,4 +1,4 @@
-import { createElement } from "../utils/render";
+import AbstractView from "./abstract";
 
 const createMoviePopupTemplate = movie => {
   return `<section class="film-details">
@@ -167,25 +167,13 @@ const createMoviePopupTemplate = movie => {
 </section>`
 }
 
-export default class MoviePopup {
+export default class MoviePopup extends AbstractView {
   constructor(movie) {
-    this._element = null;
+    super();
     this._movie = movie;
   }
 
   getTemplate() {
     return createMoviePopupTemplate(this._movie);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
